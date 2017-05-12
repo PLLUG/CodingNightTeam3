@@ -9,7 +9,13 @@ namespace RoadRunner.Dialogs
     [Serializable]
     public class RootDialog : IDialog<object>
     {
-        private ResponceBuilder _responceBuilder = new ResponceBuilder();
+        [NonSerialized]
+        private ResponceBuilder _responceBuilder;
+
+        public RootDialog()
+        {
+            _responceBuilder = new ResponceBuilder();
+        }
 
         public Task StartAsync(IDialogContext context)
         {
