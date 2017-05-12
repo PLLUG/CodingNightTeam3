@@ -2,12 +2,15 @@
 using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
+using RoadRunner.Helpers;
 
-namespace Bot_Application1.Dialogs
+namespace RoadRunner.Dialogs
 {
     [Serializable]
     public class RootDialog : IDialog<object>
     {
+        private ResponceBuilder _responceBuilder = new ResponceBuilder();
+
         public Task StartAsync(IDialogContext context)
         {
             context.Wait(MessageReceivedAsync);
@@ -20,10 +23,11 @@ namespace Bot_Application1.Dialogs
             var activity = await result as Activity;
 
             // calculate something for us to return
-            int length = (activity.Text ?? string.Empty).Length;
+
+            var address = _responceBuilder.HandleRequest(activity.Text);
 
             // return our reply to the user
-            await context.PostAsync($"You sent {activity.Text} which was {length} characters");
+            await context.PostAsync($"Requested address : {address}");
 
             context.Wait(MessageReceivedAsync);
         }
