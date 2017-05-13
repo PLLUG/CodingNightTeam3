@@ -138,6 +138,10 @@
       <Project>{923375b8-454b-4e20-a1a1-092435dd5cb4}</Project>
       <Name>RoadRunner.APIAI</Name>
     </ProjectReference>
+    <ProjectReference Include="..\RoadRunner.GoogleAPIIntegration\RoadRunner.GoogleAPIIntegration.csproj">
+      <Project>{43C98CEA-5554-4528-BBDC-A16F6DF6490F}</Project>
+      <Name>RoadRunner.GoogleAPIIntegration</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
