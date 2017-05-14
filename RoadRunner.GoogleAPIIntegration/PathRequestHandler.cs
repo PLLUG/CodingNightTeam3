@@ -12,7 +12,7 @@ namespace RoadRunner.GoogleAPIIntegration
     {
         private const string CITY = "Lviv";
 
-        public object GetBestPath(string destination)
+        public string GetBestPath(string destination)
         {
             var request = new Google.Maps.Direction.DirectionRequest();
 
@@ -26,9 +26,8 @@ namespace RoadRunner.GoogleAPIIntegration
             request.Language = "en";
             request.Region = "UA";
 
-            var responce = new DirectionService().GetResponse(request);
-
-            return new object();
+            var response = new DirectionService().GetResponse(request);
+            return ParseRoute(response.Routes[0].Legs[0].Steps);
         }
 
         private string GetExactParsedLocation(string location)
@@ -43,6 +42,16 @@ namespace RoadRunner.GoogleAPIIntegration
                 return responce.Results[0].FormattedAddress;
 
             return location;
+        }
+
+        private string ParseRoute(DirectionStep[] steps)
+        {
+            String result = "";
+            foreach (var directionStep in steps)
+            {
+                result += directionStep.HtmlInstructions.Replace("<b>", "").Replace("</b>", "").Replace("<div style=\"font-size:0.9em\">", ", ").Replace("</div>", "") + ". " + Environment.NewLine;
+            }
+            return result;
         }
     }
 }

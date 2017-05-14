@@ -25,9 +25,7 @@ namespace RoadRunner.Helpers
             if (recognitionResponce == null)
                 return "Didn't get it";
 
-            _pathRequestHandler.GetBestPath(recognitionResponce.To);
-
-            return recognitionResponce.To;
+            return _pathRequestHandler.GetBestPath(recognitionResponce.To);
         }
     }
 }

@@ -2,6 +2,6 @@
 {
     public interface IPathRequestHandler
     {
-        object GetBestPath(string destination);
+        string GetBestPath(string destination);
     }
 }
