@@ -1,7 +1,9 @@
-﻿namespace RoadRunner.GoogleAPIIntegration
+﻿using RoadRunner.GoogleAPIIntegration.Models;
+
+namespace RoadRunner.GoogleAPIIntegration
 {
     public interface IPathRequestHandler
     {
-        string GetBestPath(string destination);
+        PathRequestResponce GetBestPath(string destination);
     }
 }

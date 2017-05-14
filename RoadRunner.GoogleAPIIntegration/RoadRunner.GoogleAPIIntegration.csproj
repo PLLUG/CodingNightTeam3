@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IPathRequestHandler.cs" />
+    <Compile Include="Models\PathRequestResponce.cs" />
     <Compile Include="PathRequestHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

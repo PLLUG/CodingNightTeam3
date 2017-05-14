@@ -11,10 +11,16 @@ namespace RoadRunner.Dialogs
     {
         [NonSerialized]
         private ResponceBuilder _responceBuilder;
+        private ResponceBuilder ResponceBuilder
+        {
+            get
+            {
+                return _responceBuilder ?? (_responceBuilder = new ResponceBuilder());
+            }
+        }
 
         public RootDialog()
         {
-            _responceBuilder = new ResponceBuilder();
         }
 
         public Task StartAsync(IDialogContext context)
@@ -30,10 +36,10 @@ namespace RoadRunner.Dialogs
 
             // calculate something for us to return
 
-            var address = _responceBuilder.HandleRequest(activity.Text);
+            var builderResult = ResponceBuilder.HandleRequest(activity.Text);
 
             // return our reply to the user
-            await context.PostAsync($"Requested address : {address}");
+            await context.PostAsync($"{builderResult.TextToDisplay}");
 
             context.Wait(MessageReceivedAsync);
         }

@@ -9,6 +9,6 @@ namespace RoadRunner.APIAI
 {
     public interface IRecognitionService
     {
-        AddressResponce TryRecogniseAddress(string message);
+        APIAIRequestResult TryRecogniseAddress(string message);
     }
 }

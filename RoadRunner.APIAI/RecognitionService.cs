@@ -12,6 +12,7 @@ namespace RoadRunner.APIAI
     public class RecognitionService : IRecognitionService
     {
         private const string ADDRESS_PARAMETER_KEY = "address";
+        private const string GEOCITY_PARAMETER_KEY = "geo_city";
 
         private APIAIProvider _provider;
 
@@ -20,27 +21,52 @@ namespace RoadRunner.APIAI
             _provider = new APIAIProvider();
         }
 
-        public AddressResponce TryRecogniseAddress(string message)
+        public APIAIRequestResult TryRecogniseAddress(string message)
         {
             AIResponse responce = _provider.GetConfiguredProvider().TextRequest(message);
+            APIAIRequestResult requestResult = new APIAIRequestResult();
 
-            if (!ValidateResponce(responce))
-                return null;
-
-            return new AddressResponce
+            requestResult = FulfillAction(requestResult, responce);
+            
+            if (!requestResult.ActionIncomplete)
             {
-                To = responce.Result.Parameters.FirstOrDefault(p => p.Key == ADDRESS_PARAMETER_KEY).Value.ToString()
-            };
+                requestResult.RecognitionStatus = RecognitionStatus.Valid;
+
+                if (requestResult.Action == Actions.AddressSave)
+                    requestResult.Address = responce.Result.Parameters.FirstOrDefault(p => p.Key == ADDRESS_PARAMETER_KEY).Value.ToString();
+                else if (requestResult.Action == Actions.CitySave)
+                    requestResult.City = responce.Result.Parameters.FirstOrDefault(p => p.Key == GEOCITY_PARAMETER_KEY).Value.ToString();
+                else
+                {
+                    requestResult.QuestionToAsk = responce.Result.Fulfillment.Speech;
+                    requestResult.RecognitionStatus = RecognitionStatus.Invalid;
+                }
+                    
+            } else
+            {
+                requestResult.RecognitionStatus = RecognitionStatus.AddressMissing;
+                requestResult.QuestionToAsk = responce.Result.Fulfillment.Speech;
+            }
+
+            return requestResult;
         }
 
-        private bool ValidateResponce(AIResponse responce)
+        private static APIAIRequestResult FulfillAction(APIAIRequestResult requestResult, AIResponse responce)
         {
-            var parameters = responce.Result.Parameters;
+            requestResult.ActionIncomplete = responce.Result.ActionIncomplete;
 
-            if (!parameters.ContainsKey(ADDRESS_PARAMETER_KEY))
-                return false;
-
-            return true;
+            switch (responce.Result.Action)
+            {
+                case "save.address":
+                    requestResult.Action = Actions.AddressSave;
+                    return requestResult;
+                case "save.city":
+                    requestResult.Action = Actions.CitySave;
+                    return requestResult;
+                default:
+                    requestResult.Action = Actions.None;
+                    return requestResult;
+            }
         }
     }
 }
