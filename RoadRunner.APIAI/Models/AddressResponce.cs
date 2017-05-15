@@ -26,6 +26,7 @@ namespace RoadRunner.APIAI.Models
         public Actions Action { get; set; }
         public bool ActionIncomplete { get; set; }
         public string Address { get; set; }
+        public string TravelingType { get; set; }
         public string City { get; set; }
         public string QuestionToAsk { get; set; }
     }

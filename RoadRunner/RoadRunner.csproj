@@ -116,6 +116,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Extensions.cs" />
     <Compile Include="Helpers\ResponceBuilder.cs" />
     <Compile Include="Models\HandleRequestResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

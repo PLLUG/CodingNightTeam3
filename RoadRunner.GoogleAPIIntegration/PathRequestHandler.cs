@@ -13,7 +13,7 @@ namespace RoadRunner.GoogleAPIIntegration
     {
         private const string CITY = "Lviv";
 
-        public PathRequestResponce GetBestPath(string destination)
+        public PathRequestResponce GetBestPath(string destination, string travelMode)
         {
             var request = new Google.Maps.Direction.DirectionRequest();
 
@@ -22,7 +22,7 @@ namespace RoadRunner.GoogleAPIIntegration
 
             request.Origin = new Google.Maps.Location(parsedOrigin);
             request.Destination = new Google.Maps.Location(parsedDestination);
-            request.Mode = Google.Maps.TravelMode.walking;
+            request.Mode = ParseTravelMode(travelMode);
             request.Sensor = false;
             request.Language = "en";
             request.Region = "UA";
@@ -46,6 +46,23 @@ namespace RoadRunner.GoogleAPIIntegration
                 return responce.Results[0].FormattedAddress;
 
             return location;
+        }
+
+        private Google.Maps.TravelMode ParseTravelMode(string travelMode)
+        {
+            switch (travelMode)
+            {
+                case "on foot":
+                    return Google.Maps.TravelMode.walking;
+                case "by car":
+                    return Google.Maps.TravelMode.driving;
+                case "by bus":
+                    return Google.Maps.TravelMode.transit;
+                case "by bicycle":
+                    return Google.Maps.TravelMode.bicycling;
+                default:
+                    return Google.Maps.TravelMode.driving;
+            }
         }
 
         private string ParseRoute(DirectionStep[] steps)

@@ -13,6 +13,7 @@ namespace RoadRunner.APIAI
     {
         private const string ADDRESS_PARAMETER_KEY = "address";
         private const string GEOCITY_PARAMETER_KEY = "geo_city";
+        private const string TRAVELING_TYPE = "traveling_type";
 
         private APIAIProvider _provider;
 
@@ -33,9 +34,16 @@ namespace RoadRunner.APIAI
                 requestResult.RecognitionStatus = RecognitionStatus.Valid;
 
                 if (requestResult.Action == Actions.AddressSave)
+                {
                     requestResult.Address = responce.Result.Parameters.FirstOrDefault(p => p.Key == ADDRESS_PARAMETER_KEY).Value.ToString();
+                    requestResult.TravelingType = responce.Result.Parameters.FirstOrDefault(p => p.Key == TRAVELING_TYPE).Value.ToString();
+                }
+                    
                 else if (requestResult.Action == Actions.CitySave)
+                {
                     requestResult.City = responce.Result.Parameters.FirstOrDefault(p => p.Key == GEOCITY_PARAMETER_KEY).Value.ToString();
+                    requestResult.TravelingType = responce.Result.Parameters.FirstOrDefault(p => p.Key == TRAVELING_TYPE).Value.ToString();
+                }
                 else
                 {
                     requestResult.QuestionToAsk = responce.Result.Fulfillment.Speech;

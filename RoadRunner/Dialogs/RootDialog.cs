@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Microsoft.Bot.Builder.Dialogs;
 using Microsoft.Bot.Connector;
 using RoadRunner.Helpers;
+using System.Linq;
+using RoadRunner.Models;
 
 namespace RoadRunner.Dialogs
 {
@@ -11,6 +13,9 @@ namespace RoadRunner.Dialogs
     {
         [NonSerialized]
         private ResponceBuilder _responceBuilder;
+        
+        //private HandleRequestResult _storedRequestResult { get; set; }
+
         private ResponceBuilder ResponceBuilder
         {
             get
@@ -35,6 +40,7 @@ namespace RoadRunner.Dialogs
             var activity = await result as Activity;
 
             // calculate something for us to return
+            var location = activity.Entities?.Where(t => t.Type == "Place").Select(t => t.GetAs<Place>()).FirstOrDefault();
 
             var builderResult = ResponceBuilder.HandleRequest(activity.Text);
 

@@ -30,7 +30,7 @@ namespace RoadRunner.Helpers
             switch (recognitionResponce.RecognitionStatus)
             {
                 case APIAI.Models.RecognitionStatus.Valid:
-                    pathResponce = _pathRequestHandler.GetBestPath(recognitionResponce.Address);
+                    pathResponce = _pathRequestHandler.GetBestPath(recognitionResponce.Address, recognitionResponce.TravelingType);
                     break;
                 case APIAI.Models.RecognitionStatus.Invalid:
                     result.StuckReason = ProgressStuckReason.PhraseNotParsed;
